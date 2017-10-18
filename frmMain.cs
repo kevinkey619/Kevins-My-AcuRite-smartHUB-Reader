@@ -5,27 +5,22 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
-using System.Globalization;
-using System.Configuration;
 using System.Diagnostics;
 using PcapDotNet.Core;
 using PcapDotNet.Packets;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.IO;
-using System.Reflection;
-using System.Web;
+using System.Web.Script.Serialization;
 
 
 namespace AcuLink_Bridge_Reader_CSharp
 {
     public partial class frmMain : Form
     {
-        string appBuild = "2016.10.13.0004";
+        string appBuild = "2017.05.06.1456";
 
         bool debugDoNotPostRainData = false;
         int debugAdjustDateTimeTimeMinues = 0;
@@ -322,14 +317,7 @@ namespace AcuLink_Bridge_Reader_CSharp
                                             if ((Properties.Settings.Default.sensorTypeTemp == "" || sensorType.IndexOf(Properties.Settings.Default.sensorTypeTemp) != -1)
                                                 && (Properties.Settings.Default.sensorIdTemp == "" || sensorId.IndexOf(Properties.Settings.Default.sensorIdTemp.TrimStart('0')) != -1))
                                             {
-                                                if (element.Substring(6, 1) == "-")
-                                                {
-                                                    temperature = Math.Round(decimal.Parse(element.Substring(6)) * -1 + tempOffset, 1);
-                                                }
-                                                else
-                                                {
-                                                    temperature = Math.Round(decimal.Parse(element.Substring(6)) + tempOffset, 1);
-                                                }
+                                                temperature = Math.Round(decimal.Parse(element.Substring(6)) + tempOffset, 1);
                                             }
 
                                             if (Properties.Settings.Default.sensorTypeSoil.Length > 0 || Properties.Settings.Default.sensorIdSoil.Length > 0)
@@ -337,14 +325,7 @@ namespace AcuLink_Bridge_Reader_CSharp
                                                 if ((Properties.Settings.Default.sensorTypeSoil == "" || sensorType.IndexOf(Properties.Settings.Default.sensorTypeSoil) != -1)
                                                     && (Properties.Settings.Default.sensorIdSoil == "" || sensorId.IndexOf(Properties.Settings.Default.sensorIdSoil.TrimStart('0')) != -1))
                                                 {
-                                                    if (element.Substring(6, 1) == "-")
-                                                    {
-                                                        soilTemperature = Math.Round(decimal.Parse(element.Substring(6)) * -1 + soilTempOffset, 1);
-                                                    }
-                                                    else
-                                                    {
-                                                        soilTemperature = Math.Round(decimal.Parse(element.Substring(6)) + soilTempOffset, 1);
-                                                    }
+                                                    soilTemperature = Math.Round(decimal.Parse(element.Substring(6)) + soilTempOffset, 1);
                                                 }
                                             }
 
@@ -714,44 +695,63 @@ namespace AcuLink_Bridge_Reader_CSharp
 
                                     if (Properties.Settings.Default.postToOw == true)
                                     {
-                                        string openWeatherMapUpdateString = "http://openweathermap.org/data/post?user=" + Properties.Settings.Default.owUsername + "&password=" +
-                                            Properties.Settings.Default.owPwd + "&lat=" + Properties.Settings.Default.owLat + "&long=" + Properties.Settings.Default.owLon +
-                                            "&alt=" + Properties.Settings.Default.owAlt + "&temp=" + Math.Round((temperature - 32) * 5 / 9, 2) + "&humidity=" + humidity + "&wind_dir=" + windDegrees +
-                                            "&wind_speed=" + windspeed * Convert.ToDecimal(0.44704) + "&wind_gust=" + windGust * Convert.ToDecimal(0.44704) + "&pressure=" +
-                                            Math.Round(pressure * 33.8637526, 0) + "&rain_1h=" + decimal.ToDouble(rainLast60MinutesValue) * 25.4 + "&rain_today=" + decimal.ToDouble(cumulRainDay) * 25.4 + "&name=" +
-                                            HttpUtility.UrlEncode(Properties.Settings.Default.owStationName);
-
                                         try
                                         {
-                                            if (Properties.Settings.Default.debugMode == true)
+                                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://api.openweathermap.org/data/3.0/measurements?APPID=" +
+                                                Properties.Settings.Default.owApiKey);
+                
+                                            request.ContentType = "application/json";
+                                            request.Method = "POST";
+
+                                            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                                             {
-                                                this.Invoke(new MethodInvoker(() => txtOutput.Text = "   String posted to OpenWeatherMap: " + openWeatherMapUpdateString + System.Environment.NewLine + txtOutput.Text));
+                                                string OwJsonData = new JavaScriptSerializer().Serialize(new
+                                                {
+                                                    station_id = Properties.Settings.Default.owStationId,
+                                                    dt = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
+                                                    temperature = Math.Round((temperature - 32) * 5 / 9, 1),
+                                                    wind_speed = Math.Round(windspeed * Convert.ToDecimal(0.44704),1),
+                                                    wind_gust = Math.Round(windGust * Convert.ToDecimal(0.44704),1),
+                                                    wind_deg = windDegrees,
+                                                    pressure = Math.Round(pressure * 33.8637526, 0),
+                                                    humidity = humidity,
+                                                    rain_1h = decimal.ToDouble(rainLast60MinutesValue) * 25.4,
+                                                    rain_24h = decimal.ToDouble(rainLast24HoursValue) * 25.4,
+                                                    dew_point = Math.Round((dewpoint - 32) * 5 / 9, 1)
+                                                });
+                                                                                         
+
+                                                streamWriter.Write(OwJsonData);
                                             }
 
-                                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(openWeatherMapUpdateString);
-                                            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                                            Stream receiveStream = response.GetResponseStream();
-                                            StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
-                                            openWeatherMapResponse = readStream.ReadToEnd();
-
-                                            readStream.Close();
-                                            response.Close();
-
-                                            if (openWeatherMapResponse.IndexOf("\"cod\":\"200\"", StringComparison.OrdinalIgnoreCase) > 0)
+                                            var response = (HttpWebResponse)request.GetResponse();
+                                            using (var streamReader = new StreamReader(response.GetResponseStream()))
+                                            {
+                                                openWeatherMapResponse = streamReader.ReadToEnd();
+                                            }
+                                            
+                                            if (openWeatherMapResponse.IndexOf("\"cod\":\"204\"", StringComparison.OrdinalIgnoreCase) > 0)
                                             {
                                                 openWeatherMapResponse = "ok";
                                             }
+
+                                            //if (Properties.Settings.Default.debugMode == true)
+                                            //{
+                                            //    this.Invoke(new MethodInvoker(() => txtOutput.Text = "   String posted to OpenWeatherMap: " + OwJsonData +
+                                            //        System.Environment.NewLine + txtOutput.Text));
+                                            //}
+
                                         }
                                         catch (Exception ex)
                                         {
                                             openWeatherMapResponse = "";
-                                            this.Invoke(new MethodInvoker(() => txtOutput.Text = localDateTime + "\t" + "ERROR posting data to OpenWeatherMap. " + ex.Message +
+                                            this.Invoke(new MethodInvoker(() => txtOutput.Text = localDateTime + "\t" + "ERROR posting data to OpenWeatherMap. " + ex.Message + 
                                                 System.Environment.NewLine + txtOutput.Text));
                                             errorCount++;
 
                                             if (Properties.Settings.Default.debugMode == true)
                                             {
-                                                writeToDebugFile(localDateTime + "\t" + "ERROR posting data to OpenWeatherMap. " + ex.ToString() + "  String posted: " + openWeatherMapUpdateString + System.Environment.NewLine);
+                                                writeToDebugFile(localDateTime + "\t" + "ERROR posting data to OpenWeatherMap. " + ex.ToString() + System.Environment.NewLine);
                                             }
                                         }
                                     }
@@ -800,7 +800,7 @@ namespace AcuLink_Bridge_Reader_CSharp
                                                     "P" + Math.Round(cumulRainDay * 100, 0).ToString().PadLeft(3, padZeroChar) +
                                                     "h" + Math.Round(humidity, 0).ToString().PadLeft(2, padZeroChar) +
                                                     "b" + Math.Round(pressure * 33.8637526 * 10, 0) +
-                                                    "e" + Properties.Settings.Default.cwComment + "\r\n";
+                                                    "" + Properties.Settings.Default.cwComment + "\r\n"; // 20170506 - removed 'e' prefix
 
                                                 if (Properties.Settings.Default.debugMode == true)
                                                 {
@@ -1463,7 +1463,7 @@ namespace AcuLink_Bridge_Reader_CSharp
         private void AboutToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             MessageBox.Show("Kevin's My AcuRite smartHUB to Weather Underground Rapid Fire and More" + System.Environment.NewLine + "Build: " +
-                appBuild + System.Environment.NewLine + "© 2016  Kevin Key" +
+                appBuild + System.Environment.NewLine + "© 2017  Kevin Key" +
                 System.Environment.NewLine + "Comments/suggestions: " + System.Environment.NewLine + "http://kevin-key.blogspot.com/");
             }
 
@@ -1819,7 +1819,7 @@ namespace AcuLink_Bridge_Reader_CSharp
             lblWbStationID.Text = Properties.Settings.Default.wbPub;
             lblPwsStationID.Text = Properties.Settings.Default.pwsStation;
             lblAweatherStationID.Text = Properties.Settings.Default.awStation;
-            lblOwmId.Text = Properties.Settings.Default.owStationName;
+            lblOwmId.Text = Properties.Settings.Default.owStationId;
             lblCwopId.Text = Properties.Settings.Default.cwRegNum;
         }
 

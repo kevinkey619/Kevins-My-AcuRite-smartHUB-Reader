@@ -104,17 +104,9 @@
             this.label32 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label39 = new System.Windows.Forms.Label();
-            this.txtOwAlt = new System.Windows.Forms.TextBox();
-            this.label38 = new System.Windows.Forms.Label();
-            this.txtOwStationName = new System.Windows.Forms.TextBox();
-            this.label36 = new System.Windows.Forms.Label();
-            this.txtOwLon = new System.Windows.Forms.TextBox();
-            this.txtOwLat = new System.Windows.Forms.TextBox();
-            this.label37 = new System.Windows.Forms.Label();
+            this.txtOwStationId = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
-            this.txtOwPwd = new System.Windows.Forms.TextBox();
-            this.txtOwUsername = new System.Windows.Forms.TextBox();
-            this.label35 = new System.Windows.Forms.Label();
+            this.txtOwApiKey = new System.Windows.Forms.TextBox();
             this.cbPostToOpenWeatherMap = new System.Windows.Forms.CheckBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.txtCwComment = new System.Windows.Forms.TextBox();
@@ -941,23 +933,15 @@
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.label39);
-            this.groupBox7.Controls.Add(this.txtOwAlt);
-            this.groupBox7.Controls.Add(this.label38);
-            this.groupBox7.Controls.Add(this.txtOwStationName);
-            this.groupBox7.Controls.Add(this.label36);
-            this.groupBox7.Controls.Add(this.txtOwLon);
-            this.groupBox7.Controls.Add(this.txtOwLat);
-            this.groupBox7.Controls.Add(this.label37);
+            this.groupBox7.Controls.Add(this.txtOwStationId);
             this.groupBox7.Controls.Add(this.label34);
-            this.groupBox7.Controls.Add(this.txtOwPwd);
-            this.groupBox7.Controls.Add(this.txtOwUsername);
-            this.groupBox7.Controls.Add(this.label35);
+            this.groupBox7.Controls.Add(this.txtOwApiKey);
             this.groupBox7.Controls.Add(this.cbPostToOpenWeatherMap);
             this.groupBox7.Location = new System.Drawing.Point(34, 356);
             this.groupBox7.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox7.Size = new System.Drawing.Size(592, 446);
+            this.groupBox7.Size = new System.Drawing.Size(592, 213);
             this.groupBox7.TabIndex = 37;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "OpenWeatherMap";
@@ -968,72 +952,18 @@
             this.label39.Location = new System.Drawing.Point(20, 95);
             this.label39.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(195, 32);
+            this.label39.Size = new System.Drawing.Size(147, 32);
             this.label39.TabIndex = 14;
-            this.label39.Text = "Station Name:";
+            this.label39.Text = "Station ID:";
             // 
-            // txtOwAlt
+            // txtOwStationId
             // 
-            this.txtOwAlt.Location = new System.Drawing.Point(286, 380);
-            this.txtOwAlt.Margin = new System.Windows.Forms.Padding(8);
-            this.txtOwAlt.Name = "txtOwAlt";
-            this.txtOwAlt.Size = new System.Drawing.Size(290, 38);
-            this.txtOwAlt.TabIndex = 11;
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(24, 388);
-            this.label38.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(231, 32);
-            this.label38.TabIndex = 12;
-            this.label38.Text = "Altitude (meters):";
-            // 
-            // txtOwStationName
-            // 
-            this.txtOwStationName.Location = new System.Drawing.Point(286, 89);
-            this.txtOwStationName.Margin = new System.Windows.Forms.Padding(8);
-            this.txtOwStationName.MaxLength = 20;
-            this.txtOwStationName.Name = "txtOwStationName";
-            this.txtOwStationName.Size = new System.Drawing.Size(290, 38);
-            this.txtOwStationName.TabIndex = 13;
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(22, 273);
-            this.label36.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(126, 32);
-            this.label36.TabIndex = 7;
-            this.label36.Text = "Latitude:";
-            // 
-            // txtOwLon
-            // 
-            this.txtOwLon.Location = new System.Drawing.Point(286, 322);
-            this.txtOwLon.Margin = new System.Windows.Forms.Padding(8);
-            this.txtOwLon.Name = "txtOwLon";
-            this.txtOwLon.Size = new System.Drawing.Size(290, 38);
-            this.txtOwLon.TabIndex = 9;
-            // 
-            // txtOwLat
-            // 
-            this.txtOwLat.Location = new System.Drawing.Point(286, 264);
-            this.txtOwLat.Margin = new System.Windows.Forms.Padding(8);
-            this.txtOwLat.Name = "txtOwLat";
-            this.txtOwLat.Size = new System.Drawing.Size(290, 38);
-            this.txtOwLat.TabIndex = 8;
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(24, 329);
-            this.label37.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(150, 32);
-            this.label37.TabIndex = 10;
-            this.label37.Text = "Longitude:";
+            this.txtOwStationId.Location = new System.Drawing.Point(286, 89);
+            this.txtOwStationId.Margin = new System.Windows.Forms.Padding(8);
+            this.txtOwStationId.MaxLength = 30;
+            this.txtOwStationId.Name = "txtOwStationId";
+            this.txtOwStationId.Size = new System.Drawing.Size(290, 38);
+            this.txtOwStationId.TabIndex = 13;
             // 
             // label34
             // 
@@ -1041,36 +971,17 @@
             this.label34.Location = new System.Drawing.Point(18, 157);
             this.label34.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(153, 32);
+            this.label34.Size = new System.Drawing.Size(124, 32);
             this.label34.TabIndex = 3;
-            this.label34.Text = "Username:";
+            this.label34.Text = "API Key:";
             // 
-            // txtOwPwd
+            // txtOwApiKey
             // 
-            this.txtOwPwd.Location = new System.Drawing.Point(282, 205);
-            this.txtOwPwd.Margin = new System.Windows.Forms.Padding(8);
-            this.txtOwPwd.Name = "txtOwPwd";
-            this.txtOwPwd.Size = new System.Drawing.Size(290, 38);
-            this.txtOwPwd.TabIndex = 5;
-            this.txtOwPwd.UseSystemPasswordChar = true;
-            // 
-            // txtOwUsername
-            // 
-            this.txtOwUsername.Location = new System.Drawing.Point(282, 147);
-            this.txtOwUsername.Margin = new System.Windows.Forms.Padding(8);
-            this.txtOwUsername.Name = "txtOwUsername";
-            this.txtOwUsername.Size = new System.Drawing.Size(290, 38);
-            this.txtOwUsername.TabIndex = 4;
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(20, 213);
-            this.label35.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(147, 32);
-            this.label35.TabIndex = 6;
-            this.label35.Text = "Password:";
+            this.txtOwApiKey.Location = new System.Drawing.Point(282, 147);
+            this.txtOwApiKey.Margin = new System.Windows.Forms.Padding(8);
+            this.txtOwApiKey.Name = "txtOwApiKey";
+            this.txtOwApiKey.Size = new System.Drawing.Size(290, 38);
+            this.txtOwApiKey.TabIndex = 4;
             // 
             // cbPostToOpenWeatherMap
             // 
@@ -1585,19 +1496,11 @@
         private System.Windows.Forms.Label label33;
         internal System.Windows.Forms.TextBox txtSoilTempOffset;
         private System.Windows.Forms.GroupBox groupBox7;
-        internal System.Windows.Forms.TextBox txtOwAlt;
-        internal System.Windows.Forms.Label label38;
-        internal System.Windows.Forms.Label label36;
-        internal System.Windows.Forms.TextBox txtOwLon;
-        internal System.Windows.Forms.TextBox txtOwLat;
-        internal System.Windows.Forms.Label label37;
         internal System.Windows.Forms.Label label34;
-        internal System.Windows.Forms.TextBox txtOwPwd;
-        internal System.Windows.Forms.TextBox txtOwUsername;
-        internal System.Windows.Forms.Label label35;
+        internal System.Windows.Forms.TextBox txtOwApiKey;
         internal System.Windows.Forms.CheckBox cbPostToOpenWeatherMap;
         internal System.Windows.Forms.Label label39;
-        internal System.Windows.Forms.TextBox txtOwStationName;
+        internal System.Windows.Forms.TextBox txtOwStationId;
         internal System.Windows.Forms.GroupBox groupBox8;
         internal System.Windows.Forms.CheckBox cbPostToCw;
         internal System.Windows.Forms.Label label40;

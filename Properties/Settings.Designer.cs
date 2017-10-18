@@ -458,60 +458,24 @@ namespace AcuLink_Bridge_Reader_CSharp.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string owUsername {
+        public string owStationId {
             get {
-                return ((string)(this["owUsername"]));
+                return ((string)(this["owStationId"]));
             }
             set {
-                this["owUsername"] = value;
+                this["owStationId"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string owPwd {
+        public string owApiKey {
             get {
-                return ((string)(this["owPwd"]));
+                return ((string)(this["owApiKey"]));
             }
             set {
-                this["owPwd"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string owLat {
-            get {
-                return ((string)(this["owLat"]));
-            }
-            set {
-                this["owLat"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string owLon {
-            get {
-                return ((string)(this["owLon"]));
-            }
-            set {
-                this["owLon"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string owAlt {
-            get {
-                return ((string)(this["owAlt"]));
-            }
-            set {
-                this["owAlt"] = value;
+                this["owApiKey"] = value;
             }
         }
         
@@ -524,18 +488,6 @@ namespace AcuLink_Bridge_Reader_CSharp.Properties {
             }
             set {
                 this["postToOw"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string owStationName {
-            get {
-                return ((string)(this["owStationName"]));
-            }
-            set {
-                this["owStationName"] = value;
             }
         }
         
